@@ -65,21 +65,20 @@ class DragAndDropUpload extends HTMLElement {
     }
 
     initializeDragAndDrop() {
-
         // Prevent default drag behaviors
-        ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             this.dropArea.addEventListener(eventName, e => this.preventDefaults(e), false);
             document.body.addEventListener(eventName, e => this.preventDefaults(e), false);
-        })
+        });
 
-            // Highlight drop area when item is dragged over it
-            ;['dragenter', 'dragover'].forEach(eventName => {
-                this.dropArea.addEventListener(eventName, e => this.highlight(e), false);
-            })
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            this.dropArea.addEventListener(eventName, e => this.highlight(e), false);
+        });
 
-            ;['dragleave', 'drop'].forEach(eventName => {
-                this.dropArea.addEventListener(eventName, e => this.unhighlight(e), false);
-            })
+        ['dragleave', 'drop'].forEach(eventName => {
+            this.dropArea.addEventListener(eventName, e => this.unhighlight(e), false);
+        });
 
         // Handle dropped files
         // btw, the fat arrow function for the event listener binds the web component to "this"... which is what I expect.
@@ -125,7 +124,8 @@ class DragAndDropUpload extends HTMLElement {
 
         // the name of the form data must be the same as the name of the property of the C# class LibraryItemDocumentViewModel called FileDetails
         // also see DocumentController method "public ActionResult UploadFile(LibraryItemDocumentViewModel documentViewModel, int crid)"
-        formData.append('FileDetails', file)
+        formData.append('FileType', this.FileType);
+        formData.append('FileDetails', file);
         xhr.send(formData)
     }
 
@@ -136,21 +136,21 @@ class DragAndDropUpload extends HTMLElement {
 
     disconnectedCallback() {
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            this.dropArea.removeEventListener(eventName, preventDefaults);
-            document.body.removeEventListener(eventName, preventDefaults);
-        })
+            this.dropArea.removeEventListener(eventName, this.preventDefaults);
+            document.body.removeEventListener(eventName, this.preventDefaults);
+        });
 
         // Highlight drop area when item is dragged over it
         ['dragenter', 'dragover'].forEach(eventName => {
-            this.dropArea.removeEventListener(eventName, highlight);
-        })
+            this.dropArea.removeEventListener(eventName, this.highlight);
+        });
 
         ['dragleave', 'drop'].forEach(eventName => {
-            this.dropArea.removeEventListener(eventName, unhighlight);
-        })
+            this.dropArea.removeEventListener(eventName, this.unhighlight);
+        });
 
         // Handle dropped files
-        this.dropArea.removeEventListener('drop', this.handleDrop, false)
+        this.dropArea.removeEventListener('drop', this.handleDrop, false);
 
         this.fileInputElement.removeEventListener('change', e => this.handleFilesEvent(e));
     }
