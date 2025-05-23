@@ -40,3 +40,21 @@ The component sends files as `multipart/form-data` via a `POST` request.
 *   The `FileType` (if set, though currently not via an attribute) is sent as another field in the `FormData`.
 
 Your server-side application should be configured to handle `multipart/form-data` requests and access the file using the `FileDetails` field name.
+
+## Running Tests
+
+This project uses [Jest](https://jestjs.io/) for unit testing. To run the tests:
+
+1.  **Install Dependencies:**
+    If you haven't already, install the necessary development dependencies:
+    ```bash
+    npm install
+    ```
+
+2.  **Run Tests:**
+    Execute the test suite using:
+    ```bash
+    npm test
+    ```
+
+These tests cover core component functionality, attribute handling (like `data-title`, `upload-url`, `file-type`), drag and drop event interactions, file input change events, and the file upload logic (including XHR mocking and FormData construction).
