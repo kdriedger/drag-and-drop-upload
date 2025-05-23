@@ -52,6 +52,7 @@ class DragAndDropUpload extends HTMLElement {
         title.textContent = text;
 
         this.url = this.getAttribute('upload-url');
+        this.fileTypeAttribute = this.getAttribute('file-type') || ""; // Read file-type attribute, default to empty string
 
         const uploadForm = this.shadowRoot.getElementById('upload-form');
         uploadForm.action = this.url;
@@ -124,9 +125,26 @@ class DragAndDropUpload extends HTMLElement {
 
         // the name of the form data must be the same as the name of the property of the C# class LibraryItemDocumentViewModel called FileDetails
         // also see DocumentController method "public ActionResult UploadFile(LibraryItemDocumentViewModel documentViewModel, int crid)"
-        formData.append('FileType', this.FileType);
+        formData.append('FileType', this.fileTypeAttribute); // Use the attribute value
         formData.append('FileDetails', file);
-        xhr.send(formData)
+
+        xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                alert("File '" + file.name + "' uploaded successfully.");
+                // Clear the file input after successful upload
+                if (this.fileInputElement) {
+                    this.fileInputElement.value = ''; 
+                }
+            } else if (xhr.status >= 400) {
+                alert("Upload failed for '" + file.name + "': " + xhr.statusText);
+            }
+        };
+
+        xhr.onerror = () => {
+            alert("Error uploading file '" + file.name + "'. Please try again.");
+        };
+
+        xhr.send(formData);
     }
 
     connectedCallback() {

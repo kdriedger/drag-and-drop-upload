@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop Upload Component Demo</title>
+    <script src="src/drag-and-drop-upload.js" defer></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            color: #333;
+        }
+        drag-and-drop-upload {
+            margin-bottom: 30px;
+            display: block; /* Ensures components are stacked and margins apply */
+        }
+        p {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #e9e9e9;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Drag and Drop Upload Component Demo</h1>
+
+    <h2>Component Instance 1: With Specific File Type</h2>
+    <drag-and-drop-upload 
+        upload-url="/your-upload-endpoint" 
+        data-title="Upload Your Documents (PDFs only)"
+        file-type="application/pdf">
+    </drag-and-drop-upload>
+
+    <p>
+        <strong>Note:</strong> File uploads will attempt to go to 
+        <code>/your-upload-endpoint</code>. 
+        For a real application, you would replace this with your actual backend URL. 
+        The component will show success/error alerts based on the attempt.
+        To test successful uploads, you would need a server listening at the specified endpoint.
+    </p>
+
+    <h2>Component Instance 2: Any File Type (Default)</h2>
+    <drag-and-drop-upload 
+        upload-url="/another-endpoint" 
+        data-title="Upload Images (any type)">
+    </drag-and-drop-upload>
+
+</body>
+</html>
